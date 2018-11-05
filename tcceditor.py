@@ -3,10 +3,12 @@ import sqlite3
 import argparse
 import time
 
+tcc_database = "Library/Application Support/com.apple.TCC/TCC.db"
+
 
 def enable(client, service):
     print "Enable service {} for client {}...".format(service, client)
-    conn = sqlite3.connect("TCC.db")
+    conn = sqlite3.connect(tcc_database)
     conn.execute("INSERT or REPLACE INTO access VALUES('{}','{}',0,1,1,NULL,NULL,NULL,'UNUSED',NULL,0,{})".format(
         service, client, int(time.mktime(datetime.datetime.now().timetuple()))
     ))
@@ -16,7 +18,7 @@ def enable(client, service):
 
 def disable(client, service):
     print "Disable service {} for client {}...".format(service, client)
-    conn = sqlite3.connect("TCC.db")
+    conn = sqlite3.connect(tcc_database)
     conn.execute("INSERT or REPLACE INTO access VALUES('{}','{}',0,0,1,NULL,NULL,NULL,'UNUSED',NULL,0,{})".format(
         service, client, int(time.mktime(datetime.datetime.now().timetuple()))
     ))
@@ -26,7 +28,7 @@ def disable(client, service):
 
 def remove(client, service):
     print "Remove service {} for client {}...".format(service, client)
-    conn = sqlite3.connect("TCC.db")
+    conn = sqlite3.connect(tcc_database)
     conn.execute("DELETE FROM access WHERE service='{}' AND client='{}'".format(
         service, client
     ))
